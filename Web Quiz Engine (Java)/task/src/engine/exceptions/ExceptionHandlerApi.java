@@ -14,4 +14,18 @@ public class ExceptionHandlerApi {
                 HttpStatus.NOT_FOUND
         );
     }
+
+    @ExceptionHandler(value = UserExistException.class)
+    public ResponseEntity<Object> handleUserExistException() {
+        return new ResponseEntity<>(
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(value = NotOwnerException.class)
+    public ResponseEntity<Object> handleNotOwnerException() {
+        return new ResponseEntity<>(
+                HttpStatus.FORBIDDEN
+        );
+    }
 }

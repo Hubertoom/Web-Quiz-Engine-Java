@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface QuizRepository {
     Iterable<Quiz> findAll();
 
-    Optional<Quiz> findById(Long aLong);
+    Optional<Quiz> findById(Long id);
 
     <S extends Quiz> S save(S entity);
 }

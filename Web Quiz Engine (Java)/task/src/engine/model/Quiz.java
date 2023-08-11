@@ -34,7 +34,6 @@ public class Quiz {
     @Column
     private String text;
 
-
     @NotNull
     @Size(min = 2)
     @ElementCollection(fetch = FetchType.EAGER)
@@ -45,4 +44,13 @@ public class Quiz {
     @ElementCollection(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Integer> answer;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(
+            name = "user_id",
+            nullable = false,
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "user_quiz_fk")
+    )
+    private AppUser user;
 }

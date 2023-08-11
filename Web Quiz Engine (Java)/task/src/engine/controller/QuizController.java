@@ -7,6 +7,8 @@ import engine.dto.QuizDTO;
 import engine.model.Feedback;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,6 +40,12 @@ public class QuizController {
     @PostMapping("/quizzes/{id}/solve")
     public ResponseEntity<Feedback> solveQuizById(@PathVariable Long id, @Valid @RequestBody(required = false) Answer answer) {
         return ResponseEntity.ok(quizService.solveQuizById(id, answer));
+    }
+
+    @DeleteMapping("quizzes/{id}")
+    public ResponseEntity<?> deleteQuiz(@PathVariable Long id) {
+        quizService.deleteQuizById(id);
+        return ResponseEntity.noContent().build();
     }
 }
 
