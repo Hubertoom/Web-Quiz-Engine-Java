@@ -1,5 +1,6 @@
 package engine.controller;
 
+import engine.model.Answer;
 import engine.model.Quiz;
 import engine.servis.QuizService;
 import engine.dto.QuizDTO;
@@ -8,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @AllArgsConstructor
@@ -18,7 +21,7 @@ public class QuizController {
     private final QuizService quizService;
 
     @PostMapping("/quizzes")
-    public ResponseEntity<QuizDTO> createNewQuiz(@RequestBody Quiz quiz) {
+    public ResponseEntity<QuizDTO> createNewQuiz(@Valid @RequestBody Quiz quiz) {
         return ResponseEntity.ok(quizService.createNewQuiz(quiz));
     }
 
@@ -33,7 +36,7 @@ public class QuizController {
     }
 
     @PostMapping("/quizzes/{id}/solve")
-    public ResponseEntity<Feedback> solveQuizById(@PathVariable Long id, @RequestParam Integer answer) {
+    public ResponseEntity<Feedback> solveQuizById(@PathVariable Long id, @Valid @RequestBody(required = false) Answer answer) {
         return ResponseEntity.ok(quizService.solveQuizById(id, answer));
     }
 }

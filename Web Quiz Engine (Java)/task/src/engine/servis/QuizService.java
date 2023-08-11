@@ -1,6 +1,7 @@
 package engine.servis;
 
 import engine.exceptions.QuizNotFoundException;
+import engine.model.Answer;
 import engine.repository.QuizRepository;
 import engine.model.Quiz;
 import engine.dto.Mapper;
@@ -9,7 +10,9 @@ import engine.model.Feedback;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -36,11 +39,15 @@ public class QuizService {
                 .toList();
     }
 
-    public Feedback solveQuizById(Long id, Integer answer) {
+    public Feedback solveQuizById(Long id, Answer answer) {
         Quiz quiz = quizRepository.getQuizById(id)
                 .orElseThrow(QuizNotFoundException::new);
 
-        boolean isAnswerCorrect = quiz.getAnswer() == answer;
+        if (Objects.isNull(quiz.getAnswer()) && Objects.isNull(answer.answer())) {
+            System.out.println("jebac");
+            return new Feedback(true);
+        }
+        boolean isAnswerCorrect = new HashSet<>(quiz.getAnswer()).equals(new HashSet<>(answer.answer()));
         return new Feedback(isAnswerCorrect);
     }
 }
