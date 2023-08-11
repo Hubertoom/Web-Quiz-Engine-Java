@@ -1,6 +1,5 @@
 package engine.model;
 
-import engine.model.AppUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 @AllArgsConstructor
-public class AppUserAdapter implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
 
     private final AppUser user;
 

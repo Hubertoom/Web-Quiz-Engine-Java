@@ -1,7 +1,7 @@
 package engine.servis;
 
 import engine.model.AppUser;
-import engine.model.AppUserAdapter;
+import engine.model.UserDetailsImpl;
 import engine.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +20,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
         AppUser user = userRepository.findAppUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(""));
 
-        return new AppUserAdapter(user);
+        return new UserDetailsImpl(user);
     }
 }
