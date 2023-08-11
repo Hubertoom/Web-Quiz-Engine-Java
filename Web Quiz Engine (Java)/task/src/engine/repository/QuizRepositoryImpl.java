@@ -12,17 +12,17 @@ public class QuizRepositoryImpl implements QuizRepository {
     private final Map<Long, Quiz> quizzes = new HashMap<>();
 
     @Override
-    public List<Quiz> getQuizzes() {
+    public List<Quiz> findAll() {
         return quizzes.values().stream().toList();
     }
 
     @Override
-    public Optional<Quiz> getQuizById(Long id) {
+    public Optional<Quiz> findById(Long id) {
         return Optional.ofNullable(quizzes.get(id));
     }
 
     @Override
-    public Quiz createNewQuiz(Quiz quiz) {
+    public Quiz save(Quiz quiz) {
         quiz.setId(sequence);
         if (Objects.isNull(quiz.getAnswer())) {
             quiz.setAnswer(Collections.emptyList());

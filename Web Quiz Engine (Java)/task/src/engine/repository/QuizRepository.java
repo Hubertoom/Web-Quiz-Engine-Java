@@ -3,14 +3,13 @@ package engine.repository;
 import engine.model.Quiz;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface QuizRepository {
-    List<Quiz> getQuizzes();
+    Iterable<Quiz> findAll();
 
-    Optional<Quiz> getQuizById(Long id);
+    Optional<Quiz> findById(Long aLong);
 
-    Quiz createNewQuiz(Quiz quiz);
+    <S extends Quiz> S save(S entity);
 }
