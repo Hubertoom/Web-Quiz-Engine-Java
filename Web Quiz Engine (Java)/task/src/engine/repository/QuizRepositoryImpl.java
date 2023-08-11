@@ -24,6 +24,9 @@ public class QuizRepositoryImpl implements QuizRepository {
     @Override
     public Quiz createNewQuiz(Quiz quiz) {
         quiz.setId(sequence);
+        if (Objects.isNull(quiz.getAnswer())) {
+            quiz.setAnswer(Collections.emptyList());
+        }
         this.quizzes.put(sequence, quiz);
         sequence++;
         return quiz;
