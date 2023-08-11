@@ -1,5 +1,6 @@
 package engine.controller;
 
+import engine.model.Quiz;
 import engine.servis.QuizService;
 import engine.dto.QuizDTO;
 import engine.model.Feedback;
@@ -7,21 +8,53 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/quiz")
+@RequestMapping("/api")
 public class QuizController {
 
     private final QuizService quizService;
 
-    @GetMapping
-    public ResponseEntity<QuizDTO> getQuestion() {
-        return ResponseEntity.ok(quizService.getQuestion());
+    @PostMapping("/quizzes")
+    public ResponseEntity<QuizDTO> createNewQuiz(@RequestBody Quiz quiz) {
+        return ResponseEntity.ok(quizService.createNewQuiz(quiz));
     }
 
-    @PostMapping
-    public ResponseEntity<Feedback> getAnswer(@RequestParam Long answer) {
-        return ResponseEntity.ok(quizService.getFeedback(answer));
+    @GetMapping("/quizzes/{id}")
+    public ResponseEntity<QuizDTO> getQuizById(@PathVariable Long id) {
+        return ResponseEntity.ok(quizService.getQuizById(id));
     }
 
+    @GetMapping("/quizzes")
+    public ResponseEntity<List<QuizDTO>> getQuizzes() {
+        return ResponseEntity.ok(quizService.getQuizzes());
+    }
+
+    @PostMapping("/quizzes/{id}/solve")
+    public ResponseEntity<Feedback> solveQuizById(@PathVariable Long id, @RequestParam Integer answer) {
+        return ResponseEntity.ok(quizService.solveQuizById(id, answer));
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
