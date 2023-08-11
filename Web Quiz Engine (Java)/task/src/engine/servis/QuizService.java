@@ -43,10 +43,6 @@ public class QuizService {
         Quiz quiz = quizRepository.getQuizById(id)
                 .orElseThrow(QuizNotFoundException::new);
 
-        if (Objects.isNull(quiz.getAnswer()) && Objects.isNull(answer.answer())) {
-            System.out.println("jebac");
-            return new Feedback(true);
-        }
         boolean isAnswerCorrect = new HashSet<>(quiz.getAnswer()).equals(new HashSet<>(answer.answer()));
         return new Feedback(isAnswerCorrect);
     }
