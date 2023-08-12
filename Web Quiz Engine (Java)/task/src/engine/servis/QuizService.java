@@ -12,6 +12,10 @@ import engine.dto.QuizDTO;
 import engine.model.Feedback;
 import engine.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,11 +51,13 @@ public class QuizService {
         return Mapper.mapQuizToQuizDTO(quiz);
     }
 
-    public List<QuizDTO> getQuizzes() {
-        return StreamSupport.stream(quizRepository
-                        .findAll().spliterator(), false)
-                .map(Mapper::mapQuizToQuizDTO)
-                .toList();
+    public Page<QuizDTO> getQuizzes(Integer pageNumber) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, 10);
+
+        Page<QuizDTO> page = quizRepository.findAll(pageRequest)
+                .map(Mapper::mapQuizToQuizDTO);
+
+        return page;
     }
 
     public Feedback solveQuizById(Long id, Answer answer) {

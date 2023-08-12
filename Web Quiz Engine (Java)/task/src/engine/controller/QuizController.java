@@ -6,6 +6,7 @@ import engine.model.Feedback;
 import engine.model.Quiz;
 import engine.servis.QuizService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,8 @@ public class QuizController {
     }
 
     @GetMapping("/quizzes")
-    public ResponseEntity<List<QuizDTO>> getQuizzes() {
-        return ResponseEntity.ok(quizService.getQuizzes());
+    public ResponseEntity<Page<QuizDTO>> getQuizzes(@RequestParam Integer page) {
+        return ResponseEntity.ok(quizService.getQuizzes(page));
     }
 
     @PostMapping("/quizzes/{id}/solve")
