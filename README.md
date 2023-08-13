@@ -57,9 +57,8 @@ Here is an example:
 
     ```json
     {
-            "email":"hubertoom@gmail.com",
-	    "password":"helloworld"
-        }
+        "email":"hubertoom@gmail.com",
+	"password":"helloworld"
     }
     ```
 The service returns ``HTTP 200```, if the registration has been completed successfully.
