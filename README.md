@@ -27,6 +27,8 @@ A client can be a browser, the curl tool, a REST client like postman or somethin
 - HTTP Basic Auth
 - JSON
 - Lombok 6.6
+- H2 Database
+- Hibernate
 
 ## How to run
 You can download an archive, unzip it inside the directory you want to, and open it in your IDE. 
@@ -55,12 +57,12 @@ and then have to be authorized via **HTTP Basic Auth** otherwise you get <br/>
 To register a new user, you need to send a JSON with ``email`` and ``password`` via ``POST`` request. <br/>
 Here is an example:
 
-    ```json
-    {
-        "email":"hubertoom@gmail.com",
-	"password":"helloworld"
-    }
-    ```
+```json
+{
+"email":"hubertoom@gmail.com",
+"password":"helloworld"
+}
+```
 The service returns ``HTTP 200```, if the registration has been completed successfully.
 
 If another user already takes the email, the service will return ``HTTP 400``.
