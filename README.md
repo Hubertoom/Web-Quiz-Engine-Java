@@ -109,7 +109,7 @@ the response will be:
   "options": ["Robot","Tea leaf","Cup of coffee","Bug"]
 }
 ```
-or ``404 NOT FOUND``` if a quiz if specified id doesn't exist
+or ```404 NOT FOUND``` if a quiz if the specified id doesn't exist
 
 ### Get all quizzes (with paging)
 
