@@ -38,23 +38,21 @@ public class AppUser {
     @Column
     private String authority;
 
+    @OneToMany(mappedBy = "user")
+    List<Quiz> quizzes = new ArrayList<>();
+
     @OneToMany(
             mappedBy = "user",
             orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
     )
-    List<Quiz> quizzes = new ArrayList<>();
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
+    private final List<CompletedQuiz> completedQuizzes = new ArrayList<>();
 
     public void addQuiz(Quiz quiz) {
         this.quizzes.add(quiz);
+    }
+    public void addCompletedQuiz(CompletedQuiz completedQuiz) {
+        this.completedQuizzes.add(completedQuiz);
     }
 
     public AppUser(String username, String email, String password, String authority) {

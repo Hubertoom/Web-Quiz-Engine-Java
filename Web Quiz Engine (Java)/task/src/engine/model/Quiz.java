@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -23,7 +24,7 @@ public class Quiz {
             name = "id",
             nullable = false
     )
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -53,4 +54,16 @@ public class Quiz {
             foreignKey = @ForeignKey(name = "user_quiz_fk")
     )
     private AppUser user;
+
+    @OneToMany(
+            mappedBy = "quiz",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+    )
+    private final List<CompletedQuiz> completedQuizzes = new ArrayList<>();
+
+    public void addCompletedQuiz(CompletedQuiz completedQuiz) {
+        completedQuizzes.add(completedQuiz);
+    }
+
 }

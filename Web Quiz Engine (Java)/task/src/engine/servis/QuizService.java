@@ -1,32 +1,24 @@
 package engine.servis;
 
+import engine.dto.CompletedQuizDTO;
 import engine.exceptions.NotOwnerException;
 import engine.exceptions.QuizNotFoundException;
-import engine.model.Answer;
-import engine.model.AppUser;
+import engine.model.*;
+import engine.repository.CompletedQuizzesRepository;
 import engine.repository.QuizCrudRepository;
-import engine.repository.QuizRepository;
-import engine.model.Quiz;
 import engine.dto.Mapper;
 import engine.dto.QuizDTO;
-import engine.model.Feedback;
 import engine.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.io.NotActiveException;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 @AllArgsConstructor
 @Service
@@ -34,6 +26,7 @@ public class QuizService {
 
     private final QuizCrudRepository quizRepository;
     private final UserRepository userRepository;
+    private final CompletedQuizzesRepository completedQuizzesRepository;
 
     public QuizDTO createNewQuiz(Quiz quiz) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -65,6 +58,19 @@ public class QuizService {
                 .orElseThrow(QuizNotFoundException::new);
 
         boolean isAnswerCorrect = new HashSet<>(quiz.getAnswer()).equals(new HashSet<>(answer.answer()));
+
+        if (isAnswerCorrect) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            AppUser user = userRepository.findAppUserByUsername(auth.getName())
+                    .orElseThrow();
+
+
+            CompletedQuiz completedQuiz = new CompletedQuiz(quiz, user, new Date());
+            user.addCompletedQuiz(completedQuiz);
+            quiz.addCompletedQuiz(completedQuiz);
+            completedQuizzesRepository.save(completedQuiz);
+        }
+
         return new Feedback(isAnswerCorrect);
     }
 
@@ -78,5 +84,14 @@ public class QuizService {
         }
 
         quizRepository.delete(quiz);
+    }
+
+    public Page<CompletedQuizDTO> getCompletedQuizzes(Integer pageNumber) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        PageRequest pageRequest = PageRequest.of(pageNumber, 10);
+
+        Page<CompletedQuizDTO> page = completedQuizzesRepository.findAll(auth.getName(), pageRequest)
+                .map(Mapper::mapCompletedQuizToCompletedQuizDTO);
+        return page;
     }
 }

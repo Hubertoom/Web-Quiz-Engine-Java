@@ -1,5 +1,6 @@
 package engine.controller;
 
+import engine.dto.CompletedQuizDTO;
 import engine.dto.QuizDTO;
 import engine.model.Answer;
 import engine.model.Feedback;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -45,7 +45,13 @@ public class QuizController {
         quizService.deleteQuizById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/quizzes/completed")
+    public ResponseEntity<Page<CompletedQuizDTO>> getCompletedQuizzes(@RequestParam Integer page) {
+        return ResponseEntity.ok(quizService.getCompletedQuizzes(page));
+    }
 }
+
 
 
 
